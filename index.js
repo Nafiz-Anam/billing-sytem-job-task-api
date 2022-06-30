@@ -24,7 +24,6 @@ async function run() {
             { useNewUrlParser: true, useUnifiedTopology: true },
             () => console.log("Mongoose is connected")
         );
-
         //api endpoint
         app.use("/api", authRoute);
         app.use("/api", billRouter);
