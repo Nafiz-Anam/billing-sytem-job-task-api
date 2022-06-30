@@ -6,7 +6,7 @@ const router = express.Router();
 const billingSchema = require("../schemas/billingSchema");
 const Billing = new mongoose.model("Billing", billingSchema);
 
-router.post("/", verifyToken, async (req, res) => {
+router.post("/add-billing", verifyToken, async (req, res) => {
     // console.log(req.body);
     try {
         const newBill = new Billing(req?.body);
@@ -26,7 +26,7 @@ router.post("/", verifyToken, async (req, res) => {
 });
 
 // get searched bills
-router.get("/", verifyToken, async (req, res) => {
+router.get("/billing-list", verifyToken, async (req, res) => {
     // console.log(req.query.key);
     try {
         let query = {};
@@ -75,8 +75,27 @@ router.get("/", verifyToken, async (req, res) => {
     }
 });
 
+// get single data
+
+router.get("/update-billing/:id", verifyToken, async (req, res) => {
+    try {
+        const bill = await Billing.findById(req.params.id);
+        res.status(200).json({
+            status: 1,
+            data: bill,
+            message: "Billing data updated successfully!",
+        });
+    } catch (err) {
+        console.log("billing updating error", err);
+        res.status(500).json({
+            status: 0,
+            error: "There was a server side error!",
+        });
+    }
+});
+
 // update billing
-router.put("/:id", verifyToken, async (req, res) => {
+router.put("/update-billing/:id", verifyToken, async (req, res) => {
     try {
         const updateBill = await Billing.findByIdAndUpdate(
             req?.params?.id,
@@ -99,11 +118,11 @@ router.put("/:id", verifyToken, async (req, res) => {
 });
 
 // delete a bill
-router.delete("/:id", verifyToken, async (req, res) => {
+router.delete("/delete-billing/:id", verifyToken, async (req, res) => {
+    console.log(req?.params);
     const id = req?.params?.id;
-    // console.log(id);
     try {
-        const result = await Billing.findOneAndDelete(id);
+        const result = await Billing.findOneAndDelete({ _id: id });
         res.status(200).json({
             status: 1,
             message: "Billing data deleted successfully!",
