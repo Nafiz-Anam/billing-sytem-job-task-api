@@ -11,10 +11,10 @@ router.post("/", verifyToken, async (req, res) => {
     try {
         const newBill = new Billing(req?.body);
         const addedBill = await newBill.save();
-        console.log("addedBill data => ", addedBill);
+        // console.log("addedBill data => ", addedBill);
         res.status(200).json({
             status: 1,
-            message: "Review added successfully!",
+            message: "Bill added successfully!",
         });
     } catch (err) {
         console.log("bill adding error =>", err);
@@ -26,7 +26,7 @@ router.post("/", verifyToken, async (req, res) => {
 });
 
 // get searched bills
-router.get("/", async (req, res) => {
+router.get("/", verifyToken, async (req, res) => {
     // console.log(req.query.key);
     try {
         let query = {};
@@ -64,7 +64,7 @@ router.get("/", async (req, res) => {
         res.status(200).json({
             status: 1,
             result: data,
-            message: "Data retrieve successfully!",
+            message: "Billings data retrieve successfully!",
         });
     } catch (err) {
         console.log("bills fetching error => ", err);
@@ -106,7 +106,7 @@ router.delete("/:id", verifyToken, async (req, res) => {
         const result = await Billing.findOneAndDelete(id);
         res.status(200).json({
             status: 1,
-            message: "Blog deleted successfully!",
+            message: "Billing data deleted successfully!",
         });
     } catch (err) {
         console.log("billing deleting error", err);
