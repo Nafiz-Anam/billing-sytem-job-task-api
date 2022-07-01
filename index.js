@@ -12,7 +12,11 @@ const app = express();
 const port = process.env.PORT || 8000;
 
 //middle-wares
-app.use(cors());
+app.use(
+    cors({
+        origin: "*",
+    })
+);
 app.use(express.json());
 
 //mongodb connection
