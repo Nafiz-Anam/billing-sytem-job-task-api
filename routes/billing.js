@@ -9,7 +9,8 @@ const Billing = new mongoose.model("Billing", billingSchema);
 router.post("/add-billing", verifyToken, async (req, res) => {
     // console.log(req.body);
     try {
-        const newBill = new Billing(req?.body);
+        const uniqueId = Date.now();
+        const newBill = new Billing({ ...req?.body, billing_id: uniqueId });
         const addedBill = await newBill.save();
         // console.log("addedBill data => ", addedBill);
         res.status(200).json({
